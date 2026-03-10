@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Attendance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">📅 Mark Attendance</h1>
+    <button onclick="location.href='teacherDashboard.html'" class="bg-red-500 px-4 py-2 rounded">
+      Back
+    </button>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6">
+
+    <!-- Filters -->
+
+    <div class="bg-white p-4 rounded shadow mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+
+      <input type="date" id="attendanceDate" class="p-2 border rounded">
+
+      <select id="courseSelect" class="p-2 border rounded" onchange="updateYearOptions()">
+        <option value="">Select Course</option>
+
+        <optgroup label="+2">
+          <option value="+2 Arts">+2 Arts</option>
+          <option value="+2 Science">+2 Science</option>
+          <option value="+2 Commerce">+2 Commerce</option>
+        </optgroup>
+
+        <optgroup label="+3">
+          <option value="+3 Arts">+3 Arts</option>
+          <option value="+3 Science">+3 Science</option>
+          <option value="+3 Commerce">+3 Commerce</option>
+        </optgroup>
+
+        <option value="BCA">BCA</option>
+        <option value="BBA">BBA</option>
+      </select>
+
+      <select id="yearSelect" class="p-2 border rounded">
+        <option value="">Select Year</option>
+      </select>
+
+      <button onclick="loadStudents()" class="bg-indigo-600 text-white rounded px-4 py-2 
+         hover:bg-indigo-700 active:scale-95 
+         transition transform duration-150">
+        Load Students
+      </button>
+
+
+    </div>
+
+
+    <!-- Table -->
+    <div class="bg-white p-4 rounded shadow overflow-x-auto">
+      <table class="w-full border min-w-[700px]">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">Roll No</th>
+            <th class="border p-2">Name</th>
+            <th class="border p-2">Class</th>
+            <th class="border p-2">Status</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTable"></tbody>
+      </table>
+
+      <button id="saveBtn"
+  onclick="saveAttendanceEffect(this)"
+  disabled
+  class="mt-4 bg-green-600 text-white px-6 py-2 rounded 
+         opacity-50 cursor-not-allowed
+         transition transform duration-150">
+  Save Attendance
+</button>
+
+
+    </div>
+
+  </main>
+  <!-- Toast -->
+  <div id="toast"
+    class="fixed top-5 right-5 px-4 py-2 rounded-lg shadow-lg text-white hidden z-50 transition-all duration-300">
+  </div>
+
+
+  <script src="markAttendance.js"></script>
+</body>
+
+</html>

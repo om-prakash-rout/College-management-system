@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-gray-800 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">🛠️ Admin Dashboard</h1>
+    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold">
+      Logout
+    </button>
+
+  </header>
+
+  <!-- 🔹 Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6 md:grid-cols-3">
+
+    <!-- Profile Card -->
+    <div class="bg-white p-6 rounded-xl shadow-md md:col-span-3">
+
+      <h2 class="text-xl font-semibold mb-3">👤 Profile</h2>
+      <h2>Welcome <span id="adminName"></span></h2>
+      <p><b>Email:</b> <span id="adminEmail"></span></p>
+      <p><b>Role:</b> <span id="adminRole"></span></p>
+
+    </div>
+
+    <!-- Manage Students -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👨‍🎓 Manage Students</h2>
+      <p class="text-gray-600 mb-3">Add, update, or remove student records.</p>
+      <a href="manageStudents.html"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 inline-block text-center">
+        Manage Students
+      </a>
+    </div>
+
+
+    <!-- Manage Teachers -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👩‍🏫 Manage Teachers</h2>
+      <p class="text-gray-600 mb-3">Add, update, or remove teacher records.</p>
+      <a href="manageTeachers.html"
+        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 inline-block text-center font-semibold">
+        Manage Teachers
+      </a>
+    </div>
+    <!-- Manage Courses -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📚 Manage Courses</h2>
+      <p class="text-gray-600 mb-3">View all available courses.</p>
+      <a href="manageCourse.html"
+        class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 inline-block text-center font-semibold">
+        Manage Courses
+      </a>
+    </div>
+
+    <!-- Manage Notices -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📢 Manage Notices</h2>
+      <p class="text-gray-600 mb-3">Publish or remove college notices.</p>
+      <a href="manageNotices.html"
+        class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 inline-block text-center font-semibold">
+        Manage Notices
+      </a>
+    </div>
+
+    <!-- View Attendance -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📅 View Attendance</h2>
+      <p class="text-gray-600 mb-3">View class-wise and date-wise attendance.</p>
+      <a href="viewAttendance.html"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 inline-block text-center font-semibold">
+        View Attendance
+      </a>
+    </div>
+
+    <!-- Reports & Analytics -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📊 Reports & Analytics</h2>
+      <p class="text-gray-600 mb-3">View performance reports and system data.</p>
+      <a href="viewReports.html"
+        class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 inline-block text-center font-semibold">
+        System Overview
+      </a>
+    </div>
+
+
+  </main>
+
+  <!-- 🔹 Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    <p>&copy; 2026 N.C. Autonomous College, Jajpur | Admin Dashboard</p>
+  </footer>
+
+  <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-80 text-center animate-slideDown">
+      <h3 class="text-lg font-semibold mb-4">Confirm Logout</h3>
+      <p class="text-gray-600 mb-6">Are you sure you want to logout?</p>
+
+      <div class="flex justify-center gap-4">
+        <button id="cancelLogout" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">
+          Cancel
+        </button>
+        <button id="confirmLogout" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      const logoutModal = document.getElementById("logoutModal");
+      const cancelLogout = document.getElementById("cancelLogout");
+      const confirmLogout = document.getElementById("confirmLogout");
+
+      logoutBtn.addEventListener("click", () => {
+        logoutModal.classList.remove("hidden");
+      });
+
+      cancelLogout.addEventListener("click", () => {
+        logoutModal.classList.add("hidden");
+      });
+
+      confirmLogout.addEventListener("click", () => {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+      });
+
+    });
+  </script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const name = sessionStorage.getItem("userName");
+      const role = sessionStorage.getItem("userRole");
+      const email = sessionStorage.getItem("userEmail");
+
+      if (!name || !email || role !== "admin") {
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("adminName").textContent = name;
+
+      fetch("getAdminProfile.php?email=" + encodeURIComponent(email))
+        .then(res => res.json())
+        .then(data => {
+
+          if (data.error) {
+            console.error(data.error);
+            return;
+          }
+
+          document.getElementById("adminEmail").textContent = data.email;
+          document.getElementById("adminRole").textContent = data.role;
+
+        })
+        .catch(err => console.error("Fetch error:", err));
+
+    });
+  </script>
+
+
+
+
+
+
+
+</body>
+
+</html>

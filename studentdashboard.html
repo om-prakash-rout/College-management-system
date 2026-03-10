@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-green-700 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-2xl font-bold">🎓 Student Dashboard</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">
+      Logout
+    </button>
+  </header>
+
+  <!-- 🔹 Main Content -->
+  <main class="max-w-7xl mx-auto p-6 grid gap-6 md:grid-cols-3">
+
+    <!-- Profile Card -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">👤 Profile</h2>
+      <p><b>Name:</b> <span id="sName">Student Name</span></p>
+      <p><b>Email:</b> <span id="sEmail">student@example.com</span></p>
+      <p><b>Course:</b> <span id="sCourse">BCA</span></p>
+      <p><b>Branch:</b> <span id="sBranch">Computer Science</span></p>
+    </div>
+
+    <!-- Attendance -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📅 Attendance</h2>
+      <p class="text-gray-600 mb-3">View your attendance records.</p>
+      <a href="viewAttendance.html"
+        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 inline-block text-center font-semibold">
+        View Attendance
+      </a>
+    </div>
+
+    <!-- Marks -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📊 Marks & Grades</h2>
+      <p class="text-gray-600 mb-3">View your marks and performance.</p>
+      <a href="viewMarks.html"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 inline-block text-center font-semibold">
+        View Marks
+      </a>
+    </div>
+
+
+    <!-- Assignments -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">📝 Assignments</h2>
+      <p class="text-gray-600 mb-3">View & submit assignments.</p>
+      <a href="viewAssignment.html"
+        class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 inline-block text-center font-semibold">
+        View Assignments
+      </a>
+    </div>
+
+<!-- Notices -->
+<div class="bg-white p-6 rounded-xl shadow-md">
+  <h2 class="text-xl font-semibold mb-3">📢 Notices</h2>
+  <p class="text-gray-600 mb-3">Read important announcements.</p>
+  <a href="studentViewNotice.html"
+     class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 inline-block text-center font-semibold">
+    View Notices
+  </a>
+</div>
+
+
+    <!-- Queries -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-xl font-semibold mb-3">💬 Queries</h2>
+      <p class="text-gray-600 mb-3">Ask questions to teachers.</p>
+      <a href="studentQuery.html"
+        class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 inline-block text-center font-semibold">
+        Ask Query
+      </a>
+    </div>
+
+
+  </main>
+
+  <!-- 🔹 Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center p-4 mt-6">
+    <p>&copy; 2026 N.C. Autonomous College, Jajpur | Student Dashboard</p>
+  </footer>
+
+  <!-- Logout Confirm Modal -->
+<div id="logoutModal"
+  class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+
+  <div class="bg-white w-full max-w-sm p-6 rounded-lg shadow-lg text-center">
+
+    <h2 class="text-lg font-semibold mb-4">
+      Are you sure you want to logout?
+    </h2>
+
+    <div class="flex justify-center gap-4">
+      <button onclick="closeLogoutModal()"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+        Cancel
+      </button>
+
+      <button onclick="confirmLogout()"
+        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+        Logout
+      </button>
+    </div>
+
+  </div>
+</div>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* -------- SESSION CHECK -------- */
+  const name = sessionStorage.getItem("userName");
+  const role = sessionStorage.getItem("userRole");
+  const email = sessionStorage.getItem("userEmail");
+
+  if (!name || !email || role !== "student") {
+    window.location.href = "index.html";
+    return;
+  }
+
+  /* -------- FETCH PROFILE -------- */
+  fetch("getStudentProfile.php?email=" + encodeURIComponent(email))
+    .then(res => res.json())
+    .then(data => {
+
+      if (data.error) {
+        console.error(data.error);
+        return;
+      }
+
+      document.getElementById("sName").textContent = data.full_name;
+      document.getElementById("sEmail").textContent = data.email;
+      document.getElementById("sCourse").textContent = data.course;
+      document.getElementById("sBranch").textContent = data.branch;
+
+    })
+    .catch(err => console.error("Fetch error:", err));
+
+
+  /* -------- LOGOUT LOGIC -------- */
+  const logoutBtn = document.getElementById("logoutBtn");
+  const logoutModal = document.getElementById("logoutModal");
+
+  logoutBtn.addEventListener("click", () => {
+    logoutModal.classList.remove("hidden");
+  });
+
+  window.closeLogoutModal = function () {
+    logoutModal.classList.add("hidden");
+  };
+
+  window.confirmLogout = function () {
+    sessionStorage.clear();
+    window.location.href = "index.html";
+  };
+
+});
+</script>
+
+
+</body>
+
+</html>

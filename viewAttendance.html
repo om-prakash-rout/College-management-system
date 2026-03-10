@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">📊 Attendance Report</h1>
+    <button id="backBtn" class="bg-red-500 px-4 py-2 rounded">Back</button>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-6">
+
+    <!-- Filters -->
+    <div class="bg-white p-4 rounded shadow mb-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+
+      <input type="date" id="filterDate" class="p-2 border rounded">
+
+      <select id="filterCourse" class="p-2 border rounded">
+        <option value="">Select Course</option>
+        <option value="+2 Arts">+2 Arts</option>
+        <option value="+2 Science">+2 Science</option>
+        <option value="+2 Commerce">+2 Commerce</option>
+        <option value="+3 Arts">+3 Arts</option>
+        <option value="+3 Science">+3 Science</option>
+        <option value="+3 Commerce">+3 Commerce</option>
+        <option value="BCA">BCA</option>
+        <option value="BBA">BBA</option>
+      </select>
+
+      <select id="filterYear" class="p-2 border rounded">
+        <option value="">Select Year</option>
+      </select>
+
+
+     <button onclick="searchEffect(this)" 
+  class="bg-indigo-600 text-white px-4 py-2 rounded 
+         hover:bg-indigo-700 active:scale-95 
+         transition transform duration-150 ease-in-out">
+  Search
+</button>
+
+      
+
+
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white p-4 rounded shadow overflow-x-auto">
+      <table class="w-full border min-w-[800px]">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">Date</th>
+            <th class="border p-2">Course</th>
+            <th class="border p-2">Year</th>
+            <th class="border p-2">Roll</th>
+            <th class="border p-2">Name</th>
+            <th class="border p-2">Status</th>
+          </tr>
+        </thead>
+        <tbody id="reportTable"></tbody>
+      </table>
+    </div>
+
+  </main>
+  <!-- Toast -->
+  <div id="toast"
+    class="fixed top-5 right-5 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hidden z-50 transition-all duration-300">
+  </div>
+
+  <script>
+    const reportTable = document.getElementById("reportTable");
+    const filterCourse = document.getElementById("filterCourse");
+    const filterYear = document.getElementById("filterYear");
+
+    filterCourse.addEventListener("change", () => {
+      const course = filterCourse.value;
+
+      filterYear.innerHTML = `<option value="">Select Year</option>`;
+
+      if (!course) return;
+
+      let maxYear = 3;
+
+      // +2 only has 2 years
+      if (course.startsWith("+2")) {
+        maxYear = 2;
+      }
+
+      for (let i = 1; i <= maxYear; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = `${i}${i === 1 ? "st" : i === 2 ? "nd" : "rd"} Year`;
+        filterYear.appendChild(opt);
+      }
+    });
+
+    function loadAttendance() {
+      const date = document.getElementById("filterDate").value;
+      const course = document.getElementById("filterCourse").value;
+      const year = document.getElementById("filterYear").value;
+
+      const attendance = JSON.parse(localStorage.getItem("attendance")) || [];
+
+      reportTable.innerHTML = "";
+
+      let found = false;
+
+      attendance.forEach(entry => {
+
+        if (
+          (date && entry.date !== date) ||
+          (course && entry.course !== course) ||
+          (year && entry.year !== year)
+        ) return;
+
+        entry.records.forEach(r => {
+          found = true;
+          reportTable.innerHTML += `
+        <tr class="text-center">
+          <td class="border p-2">${entry.date}</td>
+          <td class="border p-2">${entry.course}</td>
+          <td class="border p-2">${entry.year}</td>
+          <td class="border p-2">${r.rollNumber}</td>
+          <td class="border p-2">${r.name}</td>
+          <td class="border p-2 font-semibold ${r.status === 'Present' ? 'text-green-600' : 'text-red-600'}">
+            ${r.status}
+          </td>
+        </tr>
+      `;
+        });
+
+      });
+
+      if (!found) {
+        reportTable.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center p-4 text-red-500 font-semibold">
+          No attendance records found.
+        </td>
+      </tr>
+    `;
+      }
+    }
+
+    // Auto load all records on page load
+    loadAttendance();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const backBtn = document.getElementById("backBtn");
+
+      if (!backBtn) return;
+
+      backBtn.addEventListener("click", () => {
+
+        const userData = localStorage.getItem("loggedInUser");
+
+        if (!userData) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        let user;
+        try {
+          user = JSON.parse(userData);
+        } catch (e) {
+          localStorage.removeItem("loggedInUser");
+          window.location.href = "index.html";
+          return;
+        }
+
+        console.log("Logged in user:", user); // DEBUG
+
+        if (user.role === "teacher") {
+          window.location.href = "teacherDashboard.html";
+        }
+        else if (user.role === "admin") {
+          window.location.href = "adminDashboard.html";
+        }
+        else if (user.role === "student") {
+          window.location.href = "studentdashboard.html"
+        }
+        else {
+          window.location.href = "index.html";
+        }
+
+      });
+
+    });
+  </script>
+
+
+  <script>
+    function validateAndLoad() {
+  const date = document.getElementById("filterDate").value;
+  const course = document.getElementById("filterCourse").value;
+  const year = document.getElementById("filterYear").value;
+
+  if (!date || !course || !year) {
+    showToast("⚠ Please select Date, Course and Year", "error");
+    return;
+  }
+
+  loadAttendance();
+}
+
+
+    function showToast(message, type = "error") {
+      const toast = document.getElementById("toast");
+
+      toast.textContent = message;
+
+      toast.className = `fixed top-5 right-5 px-4 py-2 rounded-lg shadow-lg z-50 
+  ${type === "success" ? "bg-green-600" : "bg-red-600"}`;
+
+      toast.classList.remove("hidden");
+
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3000);
+    }
+
+    function searchEffect(btn) {
+
+  // 🔹 Validation first
+  const date = document.getElementById("filterDate").value;
+  const course = document.getElementById("filterCourse").value;
+  const year = document.getElementById("filterYear").value;
+
+  if (!date || !course || !year) {
+    showToast("⚠ Please select Date, Course and Year!");
+    return;
+  }
+
+  // 🔹 Button animation
+  btn.classList.add("scale-90");
+
+  setTimeout(() => {
+    btn.classList.remove("scale-90");
+    loadAttendance();   // real search
+  }, 120);
+}
+
+  </script>
+
+</body>
+
+</html>

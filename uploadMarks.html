@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Marks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">📥 Upload Student Marks</h1>
+    <button onclick="location.href='teacherdashboard.html'" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
+      Back
+    </button>
+  </header>
+
+
+  <main class="max-w-5xl mx-auto p-6 bg-white shadow rounded mt-6">
+
+    <div class="grid md:grid-cols-4 gap-4">
+
+      <select id="course" class="p-2 border rounded" onchange="updateYearSemester()">
+        <option value="">Select Course</option>
+        <option value="+2 Arts">+2 Arts</option>
+        <option value="+2 Science">+2 Science</option>
+        <option value="+2 Commerce">+2 Commerce</option>
+        <option value="+3 Arts">+3 Arts</option>
+        <option value="+3 Science">+3 Science</option>
+        <option value="+3 Commerce">+3 Commerce</option>
+        <option value="BCA">BCA</option>
+        <option value="BBA">BBA</option>
+
+      </select>
+
+      <select id="year" class="p-2 border rounded" onchange="updateSemesterSubject()">
+        <option value="">Select Year</option>
+      </select>
+
+      <select id="semester" class="p-2 border rounded" onchange="updateSubjects()">
+        <option value="">Select Semester</option>
+      </select>
+
+      <select id="subject" class="p-2 border rounded">
+        <option value="">Select Subject</option>
+      </select>
+
+    </div>
+<button onclick="loadStudentsEffect(this)" 
+  class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded
+         hover:bg-indigo-700 active:scale-95
+         transition-all duration-150 shadow-md">
+  Load Students
+</button>
+
+
+
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full border">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">Roll</th>
+            <th class="border p-2">Name</th>
+            <th class="border p-2">Marks</th>
+          </tr>
+        </thead>
+        <tbody id="marksTable"></tbody>
+      </table>
+    </div>
+
+  <button id="saveBtn" onclick="saveMarksEffect(this)"
+  disabled
+  class="mt-4 bg-green-600 text-white px-6 py-2 rounded 
+         opacity-50 cursor-not-allowed
+         transition transform duration-150">
+  Save Marks
+</button>
+
+
+  </main>
+  <!-- Toast -->
+<div id="toast"
+  class="fixed top-5 right-5 px-4 py-2 rounded-lg shadow-lg text-white hidden z-50 transition-all duration-300">
+</div>
+
+
+  <script src="uploadMarks.js"></script>
+</body>
+
+</html>

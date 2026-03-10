@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Assignment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📤 Upload Assignment</h1>
+  <button onclick="location.href='teacherdashboard.html'"
+          class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
+    Back
+  </button>
+</header>
+
+<main class="max-w-5xl mx-auto p-6 bg-white shadow rounded mt-6">
+
+  <form onsubmit="saveAssignment(event)">
+
+    <div class="grid md:grid-cols-4 gap-4">
+
+      <select id="course" class="p-2 border rounded" onchange="updateYearSemester()" required>
+        <option value="">Select Course</option>
+        <option value="+2 Arts">+2 Arts</option>
+        <option value="+2 Science">+2 Science</option>
+        <option value="+2 Commerce">+2 Commerce</option>
+        <option value="+3 Arts">+3 Arts</option>
+        <option value="+3 Science">+3 Science</option>
+        <option value="+3 Commerce">+3 Commerce</option>
+        <option value="BCA">BCA</option>
+        <option value="BBA">BBA</option>
+      </select>
+
+      <select id="year" class="p-2 border rounded" onchange="updateSemesterSubject()" required>
+        <option value="">Select Year</option>
+      </select>
+
+      <select id="semester" class="p-2 border rounded" onchange="updateSubjects()" required>
+        <option value="">Select Semester</option>
+      </select>
+
+      <select id="subject" class="p-2 border rounded" required>
+        <option value="">Select Subject</option>
+      </select>
+
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mt-4">
+      <input type="text" id="title" placeholder="Assignment Title"
+             class="p-2 border rounded" required>
+
+      <input type="date" id="dueDate"
+             class="p-2 border rounded" required>
+
+      <input type="file" id="file"
+             class="p-2 border rounded" required>
+    </div>
+
+    <textarea id="description"
+              placeholder="Assignment Instructions"
+              class="w-full p-2 border rounded mt-4"
+              required></textarea>
+
+    <button type="submit"
+            class="mt-4 bg-green-600 text-white px-6 py-2 rounded">
+      Upload Assignment
+    </button>
+
+  </form>
+
+</main>
+
+
+<script src="uploadAssignment.js"></script>
+
+</body>
+</html>

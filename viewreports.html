@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Reports</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+  <h1 class="text-2xl font-bold">📊 College Reports Dashboard</h1>
+  <button onclick="location.href='adminDashboard.html'" 
+          class="bg-red-500 px-4 py-2 rounded">
+    Back
+  </button>
+</header>
+
+<main class="max-w-7xl mx-auto p-6 grid gap-6">
+
+  <!-- Summary Cards -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div class="bg-white p-6 rounded-xl shadow text-center">
+      <h3 class="text-gray-500">Total Students</h3>
+      <p id="totalStudents" class="text-3xl font-bold text-indigo-600">0</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow text-center">
+      <h3 class="text-gray-500">Total Teachers</h3>
+      <p id="totalTeachers" class="text-3xl font-bold text-green-600">0</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow text-center">
+      <h3 class="text-gray-500">Total Courses</h3>
+      <p id="totalCourses" class="text-3xl font-bold text-orange-600">0</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow text-center">
+      <h3 class="text-gray-500">Total Notices</h3>
+      <p id="totalNotices" class="text-3xl font-bold text-red-600">0</p>
+    </div>
+
+  </div>
+
+  <!-- Student Distribution -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-semibold mb-4">🎓 Students Distribution</h2>
+
+    <table class="w-full border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="border p-2">Stream</th>
+          <th class="border p-2">Total Students</th>
+        </tr>
+      </thead>
+      <tbody id="studentStreamTable"></tbody>
+    </table>
+  </div>
+
+  <!-- Teachers Distribution -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-semibold mb-4">👩‍🏫 Teachers Distribution</h2>
+
+    <table class="w-full border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="border p-2">Department</th>
+          <th class="border p-2">Total Teachers</th>
+        </tr>
+      </thead>
+      <tbody id="teacherDeptTable"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="bg-gray-900 text-gray-300 text-center p-4">
+  &copy; 2026 N.C. Autonomous College, Jajpur
+</footer>
+
+<script src="viewReports.js"></script>
+</body>
+</html>

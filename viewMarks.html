@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Result</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-green-700 text-white p-4 text-center text-xl font-bold">
+  📊 Student Result Portal
+</header>
+
+<main class="max-w-5xl mx-auto p-6 bg-white shadow rounded mt-6">
+
+  <input type="text" id="roll" placeholder="Enter Roll Number"
+    class="p-2 border rounded w-full">
+
+  <button onclick="viewResult()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded">
+    View Result
+  </button>
+
+  <table class="w-full border mt-6">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="border p-2">Subject</th>
+        <th class="border p-2">Marks</th>
+        <th class="border p-2">Max</th>
+      </tr>
+    </thead>
+    <tbody id="resultTable"></tbody>
+  </table>
+
+</main>
+
+<script>
+function viewResult() {
+  const roll = document.getElementById("roll").value;
+
+  const marks = JSON.parse(localStorage.getItem("marks")) || [];
+  const result = marks.filter(m => m.roll == roll);
+
+  const table = document.getElementById("resultTable");
+  table.innerHTML = "";
+
+  if (result.length === 0) {
+    table.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-600">No result found</td></tr>`;
+    return;
+  }
+
+  result.forEach(m => {
+    table.innerHTML += `
+      <tr>
+        <td class="border p-2">${m.subject}</td>
+        <td class="border p-2">${m.marks}</td>
+        <td class="border p-2">${m.max}</td>
+      </tr>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>

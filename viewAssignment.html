@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Assignments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📚 View Assignments</h1>
+  <button onclick="location.href='teacherdashboard.html'" class="bg-red-500 px-4 py-2 rounded">
+    Back
+  </button>
+</header>
+
+<main class="max-w-6xl mx-auto p-6 bg-white shadow rounded mt-6">
+
+  <!-- Filters -->
+  <div class="grid md:grid-cols-5 gap-4 mb-4">
+
+    <select id="course" class="p-2 border rounded" onchange="updateYear()">
+      <option value="">Select Course</option>
+      <option value="+2 Arts">+2 Arts</option>
+      <option value="+2 Science">+2 Science</option>
+      <option value="+2 Commerce">+2 Commerce</option>
+      <option value="+3 Arts">+3 Arts</option>
+      <option value="+3 Science">+3 Science</option>
+      <option value="+3 Commerce">+3 Commerce</option>
+      <option value="BCA">BCA</option>
+      <option value="BBA">BBA</option>
+    </select>
+
+    <select id="year" class="p-2 border rounded" onchange="updateSemester()">
+      <option value="">Select Year</option>
+    </select>
+
+    <select id="semester" class="p-2 border rounded" onchange="updateSubjects()">
+      <option value="">Select Semester</option>
+    </select>
+
+    <select id="subject" class="p-2 border rounded">
+      <option value="">Select Subject</option>
+    </select>
+
+    <button onclick="loadAssignments()"
+            class="bg-indigo-600 text-white rounded px-4 py-2">
+      Search
+    </button>
+
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full border">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border p-2">Title</th>
+          <th class="border p-2">Subject</th>
+          <th class="border p-2">Course</th>
+          <th class="border p-2">Year</th>
+          <th class="border p-2">Semester</th>
+          <th class="border p-2">Deadline</th>
+          <th class="border p-2">File</th>
+        </tr>
+      </thead>
+      <tbody id="assignmentTable"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<script>
+const assignmentTable = document.getElementById("assignmentTable");
+
+const subjectData = {
+  "+2 Arts": ["Odia", "English", "History", "Political Science"],
+  "+2 Science": ["Physics", "Chemistry", "Mathematics", "Biology"],
+  "+2 Commerce": ["Accountancy", "Business Studies", "Economics"],
+
+  "+3 Arts": ["Odia", "English", "History", "Political Science"],
+  "+3 Science": ["Physics", "Chemistry", "Mathematics", "Biology"],
+  "+3 Commerce": ["Accountancy", "Business Management", "Economics"],
+
+  "BCA": {
+    1: ["IT Fundamentals", "C Programming", "Mathematics"],
+    2: ["Data Structures", "DBMS", "Operating System"],
+    3: ["Java", "Web Technology", "Computer Network"]
+  },
+
+  "BBA": {
+    1: ["Principles of Management", "Business Economics"],
+    2: ["Marketing Management", "Financial Accounting"],
+    3: ["HR Management", "Business Law"]
+  }
+};
+
+function updateYear() {
+  const course = document.getElementById("course").value;
+  const year = document.getElementById("year");
+  const semester = document.getElementById("semester");
+
+  year.innerHTML = `<option value="">Select Year</option>`;
+  semester.innerHTML = `<option value="">Select Semester</option>`;
+
+  if (course.startsWith("+2")) {
+    year.innerHTML += `<option value="1">1st Year</option>`;
+    year.innerHTML += `<option value="2">2nd Year</option>`;
+    semester.disabled = true;
+  } else {
+    year.innerHTML += `<option value="1">1st Year</option>`;
+    year.innerHTML += `<option value="2">2nd Year</option>`;
+    year.innerHTML += `<option value="3">3rd Year</option>`;
+    semester.disabled = false;
+  }
+}
+
+function updateSemester() {
+  const course = document.getElementById("course").value;
+  const year = document.getElementById("year").value;
+  const semester = document.getElementById("semester");
+
+  semester.innerHTML = `<option value="">Select Semester</option>`;
+
+  // +2 → no semester → load subjects directly
+  if (course.startsWith("+2")) {
+    updateSubjects();
+    return;
+  }
+
+  if (!year) return;
+
+  if (year === "1") {
+    semester.innerHTML += `<option value="1">Semester 1</option>`;
+    semester.innerHTML += `<option value="2">Semester 2</option>`;
+  }
+  if (year === "2") {
+    semester.innerHTML += `<option value="3">Semester 3</option>`;
+    semester.innerHTML += `<option value="4">Semester 4</option>`;
+  }
+  if (year === "3") {
+    semester.innerHTML += `<option value="5">Semester 5</option>`;
+    semester.innerHTML += `<option value="6">Semester 6</option>`;
+  }
+}
+
+
+function updateSubjects() {
+  const course = document.getElementById("course").value;
+  const year = document.getElementById("year").value;
+  const subject = document.getElementById("subject");
+
+  subject.innerHTML = `<option value="">Select Subject</option>`;
+
+  if (course.startsWith("+2") || course.startsWith("+3")) {
+    subjectData[course]?.forEach(s => {
+      subject.innerHTML += `<option value="${s}">${s}</option>`;
+    });
+  } else {
+    subjectData[course]?.[year]?.forEach(s => {
+      subject.innerHTML += `<option value="${s}">${s}</option>`;
+    });
+  }
+}
+
+function loadAssignments() {
+  const course = courseSelect();
+  const year = yearSelect();
+  const semester = semesterSelect();
+  const subject = subjectSelect();
+
+  const assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+  assignmentTable.innerHTML = "";
+
+  const filtered = assignments.filter(a =>
+    a.course === course &&
+    a.year === year &&
+    (course.startsWith("+2") || a.semester === semester) &&
+    a.subject === subject
+  );
+
+  if (!filtered.length) {
+    assignmentTable.innerHTML = `
+      <tr><td colspan="7" class="text-center p-4 text-red-500 font-semibold">
+      No assignments found.</td></tr>`;
+    return;
+  }
+
+  filtered.forEach(a => {
+    assignmentTable.innerHTML += `
+      <tr class="text-center">
+        <td class="border p-2">${a.title}</td>
+        <td class="border p-2">${a.subject}</td>
+        <td class="border p-2">${a.course}</td>
+        <td class="border p-2">${a.year}</td>
+        <td class="border p-2">${a.semester || "-"}</td>
+        <td class="border p-2">${a.deadline}</td>
+        <td class="border p-2">
+          <a href="${a.fileData}" download="${a.fileName}" class="text-blue-600 underline">
+            Download
+          </a>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* Helpers */
+const courseSelect = () => document.getElementById("course").value;
+const yearSelect = () => document.getElementById("year").value;
+const semesterSelect = () => document.getElementById("semester").value;
+const subjectSelect = () => document.getElementById("subject").value;
+</script>
+
+</body>
+</html>

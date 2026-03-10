@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">🔔 Teacher Notifications</h1>
+  <button onclick="location.href='teacherAnnouncement.html'"
+    class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
+    Back
+  </button>
+</header>
+
+<main id="notifyBox" class="max-w-4xl mx-auto p-6 space-y-4"></main>
+
+<script>
+const STORAGE_KEY = "notices";
+const box = document.getElementById("notifyBox");
+
+function loadNotifications() {
+  const notices = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+  const teacherNotices = notices.filter(n =>
+    n.posted_by === "admin" &&
+    (n.target_role === "teacher" || n.target_role === "all")
+  );
+
+  if (teacherNotices.length === 0) {
+    box.innerHTML = `<p class="text-center text-gray-500">No notifications.</p>`;
+    return;
+  }
+
+  teacherNotices.reverse().forEach(n => {
+    box.innerHTML += `
+      <div class="bg-white p-4 rounded shadow border-l-4 border-indigo-600">
+        <h3 class="font-semibold text-lg">${n.title}</h3>
+        <p class="text-gray-700">${n.description}</p>
+        <p class="text-sm text-gray-500 mt-1">
+          Posted by Admin • ${new Date(n.created_at).toLocaleString()}
+        </p>
+      </div>
+    `;
+  });
+}
+
+loadNotifications();
+</script>
+
+</body>
+</html>

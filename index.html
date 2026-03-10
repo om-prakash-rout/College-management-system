@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- 🔹 Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+      <!-- 🔹 College Logo (Left Corner) -->
+      <div class="flex items-center">
+        <img src="nc_logo.jpeg" alt="College Logo" class="h-10 w-auto">
+      </div>
+
+      <!-- 🔹 Login Button (Right Corner) -->
+      <div class="relative">
+        <button id="loginBtn"
+          class="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700">
+          Login ⬇
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="loginMenu" class="absolute right-0 hidden bg-white shadow-lg rounded-lg mt-2 w-48 text-gray-800">
+          <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Student">👨‍🎓 Student
+            Login</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Teacher">👩‍🏫 Teacher
+            Login</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-indigo-100 roleBtn" data-role="Admin">🛠️ Admin
+            Login</button>
+        </div>
+      </div>
+  </header>
+
+  <!-- 🔹 Hero Section -->
+  <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center p-8 md:p-12">
+      <div class="flex-1 space-y-5 text-center md:text-left">
+        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          Welcome to NC College Management System
+        </h2>
+        <p class="text-lg">A smart platform for Students, Teachers, and Administrators.</p>
+      </div>
+      <div class="flex-1 mt-8 md:mt-0">
+        <img src="principal.jpg" alt="College" class="w-full max-w-sm mx-auto md:max-w-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 Features Section -->
+  <section class="max-w-7xl mx-auto py-12 px-6">
+    <h3 class="text-3xl font-bold text-center mb-10">System Features</h3>
+    <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📅 Attendance</h4>
+        <p class="text-gray-600">Students can check attendance, Teachers can mark attendance.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📊 Marks & Grades</h4>
+        <p class="text-gray-600">View marks and performance reports uploaded by teachers.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📝 Assignments</h4>
+        <p class="text-gray-600">Upload and download assignments with deadlines.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📢 Notices</h4>
+        <p class="text-gray-600">Latest announcements from the college admin and faculty.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">📚 Courses</h4>
+        <p class="text-gray-600">Browse subjects, syllabi, and course information.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-center">
+        <h4 class="font-semibold text-lg mb-2">👤 Profile</h4>
+        <p class="text-gray-600">Students and teachers can manage their personal information.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 Notice Board Preview -->
+  <section class="bg-gray-100 py-10 px-6">
+ <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg relative">
+
+  <h4 class="text-2xl font-bold text-center mb-6">
+    📢 Notice Board
+  </h4>
+
+  <!-- Blurred Notice Preview -->
+  <div class="space-y-4 relative">
+
+    <div class="p-4 border rounded-lg bg-gray-50 blur-sm select-none">
+      <h5 class="font-semibold">Mid-Sem Examination Schedule</h5>
+      <p class="text-sm text-gray-600">
+        Examination will commence from 20th September as per timetable...
+      </p>
+    </div>
+
+    <div class="p-4 border rounded-lg bg-gray-50 blur-sm select-none">
+      <h5 class="font-semibold">Annual College Fest Registration</h5>
+      <p class="text-sm text-gray-600">
+        Students are requested to complete registration before 15th September...
+      </p>
+    </div>
+
+    <div class="p-4 border rounded-lg bg-gray-50 blur-sm select-none">
+      <h5 class="font-semibold">Placement Drive – BCA Final Year</h5>
+      <p class="text-sm text-gray-600">
+        Campus placement drive scheduled on 25th September...
+      </p>
+    </div>
+
+    <!-- Overlay Lock -->
+    <div class="absolute inset-0 flex items-center justify-center bg-white/70 rounded-2xl">
+      <div class="text-center space-y-3">
+        <div class="text-4xl">🔒</div>
+        <p class="font-semibold text-gray-800">
+          Login to Access Official Notices
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+  </section>
+
+  <!-- 🔹 Footer -->
+  <footer class="bg-gray-900 text-gray-300 p-4 text-center space-y-2">
+    <p><u><b>CONTACT US</b></u></p>
+    <p>🏫 N.C. (Narasingh Choudhury) Autonomous College, Jajpur</p>
+    <p>📍 Abdalpur, Jajpur Town, Jajpur-755001, Odisha, India</p>
+    <p>📞 06728222032 | ✉️ ncacjajpur@gmail.com</p>
+    <p>🌐 www.ncac.in</p>
+  </footer>
+
+
+  <!-- 🔹 Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-center">
+    <div class="bg-white rounded-xl w-11/12 max-w-md p-8 relative animate-slideDown">
+      <span id="closeLoginModal"
+        class="absolute top-3 right-4 text-gray-500 text-2xl cursor-pointer hover:text-gray-800">&times;</span>
+      <h2 id="loginTitle" class="text-2xl font-bold text-center mb-6">Login</h2>
+      <form id="loginForm" class="space-y-4">
+        <input type="email" name="email" placeholder="Enter email" class="w-full border border-gray-300 rounded-lg p-2"
+          required>
+        <input type="password" name="password" placeholder="Enter password"
+          class="w-full border border-gray-300 rounded-lg p-2" required>
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast"
+    class="fixed top-5 right-5 hidden bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slideDown">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

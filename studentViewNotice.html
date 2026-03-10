@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Notices</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📢 College Notices</h1>
+  <a href="studentDashboard.html" class="bg-red-500 px-4 py-2 rounded">Back</a>
+</header>
+
+<main class="max-w-5xl mx-auto p-6">
+
+  <div id="noticeContainer" class="space-y-4"></div>
+
+</main>
+<script>
+const noticeContainer = document.getElementById("noticeContainer");
+
+function loadNotices() {
+  let notices = JSON.parse(localStorage.getItem("notices")) || [];
+
+  // ✅ FILTER ONLY STUDENT + ALL
+  notices = notices.filter(n =>
+    n.target_role === "student" || n.target_role === "all"
+  );
+
+  // Latest first
+  notices.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  if (notices.length === 0) {
+    noticeContainer.innerHTML = `
+      <div class="bg-white p-6 rounded shadow text-center text-gray-500">
+        No notices available.
+      </div>
+    `;
+    return;
+  }
+
+  noticeContainer.innerHTML = "";
+
+  notices.forEach(n => {
+    noticeContainer.innerHTML += `
+      <div class="bg-white p-5 rounded-xl shadow border-l-4 
+        ${n.posted_by === "admin" ? "border-indigo-600" : "border-green-600"}">
+
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-lg font-semibold">${n.title}</h2>
+          <span class="text-sm text-gray-500">
+            ${new Date(n.created_at).toLocaleString()}
+          </span>
+        </div>
+
+        <p class="text-gray-700 mb-3">${n.description}</p>
+
+        <span class="text-sm font-semibold 
+          ${n.posted_by === "admin" ? "text-indigo-600" : "text-green-600"}">
+          Posted by: ${n.author_name}
+        </span>
+      </div>
+    `;
+  });
+}
+
+loadNotices();
+</script>
+
+
+</body>
+</html>
